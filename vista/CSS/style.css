@@ -405,7 +405,27 @@ box-shadow: 6px 7px 25px -10px #000000;
     margin-bottom: 20px;
 }
 
-/*datos personales*/
+/*PAPELERA*/
+.papelera{
+    text-align: center;
+    padding-left: 15%;
+    padding-top: 2%;
+}
+
+.lead{
+    
+    font-size: 100%;
+    
+}
+
+.icono-papelera{
+    text-align: center;
+    padding-top: 10%;
+    font-size: 1200%;
+    color: #E5CBFF;
+}
+
+
 /*DATOS PERSONALES*/
 .datos-personales{
    

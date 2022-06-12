@@ -17,7 +17,7 @@ require_once('layouts/header.php');
          
          <div >
 
-             <form class="form-personal" method="post">
+             <form action="" method="get" class="form-personal" method="post">
 
                  <label  for="nombre"> <span class="datos"> <strong>Nombre </strong> </span> </label><br>
                  <input  type="text" required="required" name="nombre" id="nombre"><br>

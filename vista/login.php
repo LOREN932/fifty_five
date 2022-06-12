@@ -1,5 +1,5 @@
-<?php  /*
-require_once("layouts/header.php");
+<?php
+require_once("layouts/header4.php");
 ?>
 
 <div class="formulario">
@@ -20,12 +20,13 @@ require_once("layouts/header.php");
             </div>
             <div class="recordarcontraseña">
 
-                <a href="recuperar contraseña.html">¿Olvidaste tu contraseña?</a> 
+                <a href=index.php?n=restablecer>¿Olvidaste tu contraseña?</a> 
                 
             </div>
             <input type="submit" value="Ingresar">
-            <input type="hidden" name="n" value="login"> 
+            <input type="hidden" name="n" value="login">
             <div class="registrarse">
+                
                <a href=index.php?n=nuevo>Quiero registrarme</a> 
             </div>
         </form>

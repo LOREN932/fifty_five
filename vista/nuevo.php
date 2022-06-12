@@ -1,6 +1,5 @@
-
-<?php  /*
-  require_once("layouts/header2.php");
+<?php
+  require_once("layouts/header5.php");
 ?>
 
 <div class="registro">
@@ -27,7 +26,7 @@
    
      <div class="pa2">
           <div class="username">
-             <input type="text" required placeholder="Nombre de Usuario" name="nombredeusuario"> 
+             <input type="text" required placeholder="Nombre de Usuario" name="n_usuario"> 
  
          </div>
          
@@ -54,10 +53,13 @@
     </div>
 
     <input type="submit" class="btn btn-1" name="btn" value="GUARDAR"><br>
-    <input type="hidden" name="n" value="guardar"> 
-    <!-- para iniciar sesion en tal caso -->
+    <input type="hidden" name="n" value="guardaru">
 </form>
-
+<form action="" method="get">
+   <!-- para iniciar sesion en tal caso -->
+   <input type="submit" class="btn btn-1 margin" name="btn" value="Iniciar sesion"><br>
+    <input type="hidden" name="n" value="iniciar">
+</form>
 </div>
 <?php 
 require_once("layouts/footer.php");

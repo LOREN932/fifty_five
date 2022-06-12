@@ -12,7 +12,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="https://kit.fontawesome.com/8aca401b21.js" crossorigin="anonymous"></script>
 </head>
-<body>
+<body class="fondo">
+    <div class="fondo2"></div>
     <header class="header">
         <div class="header-icono">
             <i class="fas fa-bars" id="btn"></i>

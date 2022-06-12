@@ -26,7 +26,8 @@ require_once('layouts/header.php');
                             <div class="contenedor-iconos2">
                                   <a href="index.php?n=editar&id=<?php echo $v['id']?>"><i class="fa-solid fa-pen-to-square iconos2"></i></a>
                             <a href="index.php?n=archivar&id=<?php echo $v['id']?>"><i class="fa-solid fa-box-archive iconos2"></i></a>
-                            <a href="index.php?n=eliminar&id=<?php echo $v['id']?>" onclick="return confirm('¿Estas seguro de eliminar?'); false"><i class="fa-solid fa-trash-can iconos2"></i></a> 
+                            <a href="index.php?n=papelera&id=<?php echo $v['id']?>"><i class="fa-solid fa-trash-can iconos2"></i></a> 
+                            <a href="index.php?n=eliminar&id=<?php echo $v['id']?>" onclick="return confirm('¿Estas seguro de eliminar?'); false"><i class="fa-solid fa-circle-xmark iconos2"></i></a> 
                             </div>
                         </p>
                     </div>
@@ -35,10 +36,11 @@ require_once('layouts/header.php');
                 <div class="contenido">
                     <div class="text-archivos">
                         <!-- <i class="fa-solid fa-box-archive"></i> -->
-                       <!-- <p>No se han creado tareas aun</p>-->
+                      
                     </div>
                 </div>
-     <?php endif ?>
+     <?php endif ?> 
+                
 
 <!--MODAL PARA CREAR TAREA-->
     
@@ -90,12 +92,13 @@ require_once('layouts/header.php');
             foreach($value2 as $v2):?>
                     <div class="grid--recuadro " style="background-color:white ">
                         
-                        <p><?php echo $v2['descripcion_nota'] ?> </p>
+                        <p><?php echo $v2['descripcion_anotaciones'] ?> </p>
                         <p>
                             <div class="contenedor-iconos2">
                                   <a href="index.php?n=editar_nota&id=<?php echo $v2['id']?>"><i class="fa-solid fa-pen-to-square iconos2"></i></a>
                             <a href="index.php?n=archivar_nota&id=<?php echo $v2['id']?>"><i class="fa-solid fa-box-archive iconos2"></i></a>
-                            <a href="index.php?n=eliminar_nota&id=<?php echo $v2['id']?>" onclick="return confirm('¿Estas seguro de eliminar?'); false"><i class="fa-solid fa-trash-can iconos2"></i></a> 
+                            <a href="index.php?n=papelera_nota&id=<?php echo $v2['id']?>"><i class="fa-solid fa-trash-can iconos2"></i></a>  
+                            <a href="index.php?n=eliminar_nota&id=<?php echo $v2['id']?>" onclick="return confirm('¿Estas seguro de eliminar?'); false"><i class="fa-solid fa-circle-xmark iconos2"></i></a> 
                             </div>
                         </p>
                        
@@ -126,8 +129,8 @@ require_once('layouts/header.php');
                 </div>
                 <div class="modal-body">
 <form action="" method="get">
-    <label for="descripcion_nota"> <strong>Nota</strong> </label>        <br>
-                    <textarea  required="required" name="descripcion_nota" id="descripcion_nota" cols="55" rows="10"></textarea>  <br>
+    <label for="descripcion_anotaciones"> <strong>Nota</strong> </label>        <br>
+                    <textarea  required="required" name="descripcion_anotaciones" id="descripcion_anotaciones" cols="55" rows="10"></textarea>  <br>
                     <input class="submit-notas"  type="submit"  value="Guardar ">
                     <input type="hidden" name="n" value="guardar_nota"> 
 

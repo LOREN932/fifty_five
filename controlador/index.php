@@ -1,52 +1,131 @@
 <?php
-    require_once("modelo/index.php");
+    require 'modelo/index.php';
 
-    class ModeloController{
+  class ModeloController{
         private $model;
         public function __construct(){
             $this->model=new Modelo();
         }
+
+        //Pagina de inicio 
+        static function principal(){
+          require_once("vista/layouts/header7.php");
+        }
+
         // Iniciar en la pagina de inicio
         static function iniciar(){
+          require_once("vista/login.php");
+        }
+          static function inicio(){
           require_once("vista/index.php");
         }
-        // mostrar
-        static function index(){
-            $datos=new Modelo();
-            $datos2=new Modelo();
-            $dato=$datos->mostrar("tarea","0");
-            $dato2=$datos2->mostrar_nota("anotaciones","0");
-            require_once("vista/tareas.php");
+        static function personales(){ //DATOS PERSONALES
+          require_once("vista/DatosPersonales.php");
         }
-       
-        static function busqueda(){
-          require_once("vista/tareas.php");
-      }
-        // NUEVO
+
+        // RESTABLECER CONTRASENIA
+        static function restablecer(){
+  
+          require_once("vista/restablecer.php");
+       }
+  
+        // mostrar
+        public static function index(){
+            $datos=new Modelo();
+            $datos2=new Modelo(); //para anotaciones
+
+            $data=$datos->traerIdSesiones("sesiones");
+            $datix=$datos->traerIdUser("sesiones",$data);
+            $dato=$datos->mostrar("tarea",0,$datix);
+           
+            $data=$datos2->traerIdSesiones("sesiones"); //para anotaciones
+            $datix=$datos2->traerIdUser("sesiones",$data); //para anotaciones
+            $dato2=$datos2->mostrar_nota("anotaciones",0,$datix); //para anotaciones
+
+            require_once("vista/tareas.php");
+           }
+      
+        // NUEVO USUARIO, REGISTRO
         static function nuevo(){
            require_once("vista/nuevo.php");
         }
 
-        //datos personales
-        static function personales(){
-          require_once("vista/DatosPersonales.php");
-       }
-
-
         // Guardar
         static function guardar(){
-            $titulo=$_REQUEST['titulo'];
-            $mensaje=$_REQUEST['mensaje'];
-            $color=$_REQUEST['color'];
-            $fecha_inicio=date('d/m/y');
-            $fecha_finalizacion=$_REQUEST['fecha'];
+          $titulo=$_REQUEST['titulo'];
+          $mensaje=$_REQUEST['mensaje'];
+          $color=$_REQUEST['color'];
+          $fecha_inicio=date('d/m/y');
+          $fecha_finalizacion=$_REQUEST['fecha'];
             $condicion=0;
-            $id_usuario=1;
-            $data="'".$titulo."','".$mensaje."','".$fecha_inicio."','".$fecha_finalizacion."','".$color."',".$condicion.",".$id_usuario;
             $usuario=new Modelo();
+            $datu=$usuario->traerIdSesiones("sesiones");
+            $datix=$usuario->traerIdUser("sesiones",$datu);
+            $data="'".$titulo."','".$mensaje."','".$fecha_inicio."','".$fecha_finalizacion."','".$color."',".$condicion.",". $datix;
+            
               $dato=$usuario->insertar("tarea",$data);
-               header('location:'.'index.php?n=index');
+              header('location:'.'index.php?n=index');
          }
+
+        //  Guardar datos de usuario
+         static function guardaru(){
+          $nombre=$_REQUEST['nombre'];
+          $apellido=$_REQUEST['apellido'];
+           $correo=$_REQUEST['correo'];
+          $n_usuario=$_REQUEST['n_usuario'];
+          $contrasenia=$_REQUEST['contrasenia'];
+          $data="'".$nombre."','".$apellido."','".$correo."','".$n_usuario."','".$contrasenia."'";
+         
+          $usuario=new Modelo();
+          $condicion="nombre='".$nombre."' AND apellido='".$apellido."' AND correo='".$correo."' AND n_usuario='".$n_usuario."' AND clave='".$contrasenia."'";
+
+            if($usuario->validar_User_existente("usuario","n_usuario='".$n_usuario."'","correo='".$correo."'")){
+              header('location:'.ModeloController::nuevo());
+               echo "<script>alert('el nombre de usuario: $n_usuario o el correo: $correo ya estan siendo utilizados');</script>";
+            }else{
+              $dato=$usuario->insertar("usuario",$data);
+              $datux=$usuario->traerId("usuario",$condicion);
+              $dato=$usuario->insertar("sesiones",$datux);
+               header('location:'.'index.php?n=iniciar');
+            }
+       } 
+
+      //  actualizar usuario
+      static function actualizaru(){
+           
+        $correo=$_REQUEST['correo'];
+        $contrasenia=$_REQUEST['contrasenia'];
+        $data   = "clave='".$contrasenia."'";
+         $datos=new Modelo();
+         if($datos->validar_User_existente2("usuario","correo= '".$correo."'" )){
+            $mostrar=$datos->traerid("usuario","correo= '".$correo."'");
+            $dato=$datos->actualizar("usuario",$data,"id=".$mostrar);
+            header('location:'.ModeloController::iniciar());
+            echo "<script>alert('La contraseña fue cambiada exitosamente');</script>";
+         }
+         else{
+          header('location:'.ModeloController::restablecer());
+          echo "<script>alert('El correo: $correo  no existe');</script>";
+         }
+      
+        }
+
+       public static function login(){
+        $usuario=$_REQUEST['n_usuario'];
+        $contrasenia=$_REQUEST['contrasenia'];
+         $datos=new Modelo();
+         $data="n_usuario='".$usuario."' AND clave='".$contrasenia."'";
+         $dato=$datos->login("usuario",$data);
+        if($dato==true){
+         $datu=$datos->traerId("usuario",$data);
+         $datix=$datos->insertar("sesiones",$datu);
+          header('location:'.'index.php?n=inicio');
+        }
+        else{
+          echo "<script>alert('la contraseña/nombre de usuario no coinciden');</script>";
+          header('location:'.'index.php?n=iniciar');
+        }
+      }
 
         // inciar busqueda
         static function buscar(){
@@ -58,12 +137,18 @@
        }
           // editar
         static function editar(){
-            $id=$_REQUEST['id'];
-            $datos=new Modelo();
-            $dato=$datos->mostrar2("tarea","id=".$id);
-            require_once("vista/editar.php");
+          $id=$_REQUEST['id'];
+          $datos=new Modelo();
+          $dato=$datos->mostrar2("tarea","id=".$id);
+          require_once("vista/editar.php");
          }
-        
+         // editar DESDE ARCHIVADOS
+        static function editar2(){
+          $id=$_REQUEST['id'];
+          $datos=new Modelo();
+          $dato=$datos->mostrar2("tarea","id=".$id);
+          require_once("vista/editar2.php");
+         }
  
          // actualizar
          static function actualizar(){
@@ -77,27 +162,101 @@
              $dato=$datos->actualizar("tarea",$data,"id=".$id);
              header('location:'.'index.php?n=index');
           }
+          // ACTUALIZAR TAREAS EN ARCHIVADOS
+          static function actualizar2(){
+            $id=$_REQUEST['id'];
+             $titulo=$_REQUEST['titulo'];
+            $mensaje=$_REQUEST['mensaje'];
+            $color=$_REQUEST['color'];
+            $fecha_finalizacion=$_REQUEST['fecha'];
+            $data="titulo='".$titulo."',descripcion='".$mensaje."',color='".$color."',fecha_finalizacion='".$fecha_finalizacion."'";
+             $datos=new Modelo();
+             $dato=$datos->actualizar("tarea",$data,"id=".$id);
+             header('location:'.'index.php?n=paginaArch');
+          }
           static function archivar(){
             $id=$_REQUEST['id'];
             $datos=new Modelo();
             $dato=$datos->archivar("tarea","id=".$id,1);
-            $dato=$datos->mostrar("tarea","0");
-            require_once("vista/tareas.php");
-          }
+            header('location:'.'index.php?n=index');
+          } 
           static function sacarArch(){
             $id=$_REQUEST['id'];
             $datos=new Modelo();
+            $datos2=new Modelo();//anotaciones
+
+             $data=$datos->traerIdSesiones("sesiones");
+            $datix=$datos->traerIdUser("sesiones",$data);
             $dato=$datos->archivar("tarea","id=".$id,0);
-            $dato=$datos->mostrar("tarea","1");
+             $dato=$datos->mostrar("tarea","1",$datix);
+
+             $data=$datos2->traerIdSesiones("sesiones");//anotaciones
+             $datix=$datos2->traerIdUser("sesiones",$data);//anotaciones
+             $dato2=$datos2->archivar("anotaciones","id=".$id,0);//anotaciones
+              $dato2=$datos2->mostrar_nota("anotaciones","1",$datix);//anotaciones
             require_once("vista/archivados.php");
           }
           static function paginaArch(){
             $datos=new Modelo();
-            $datos2=new Modelo();
-            $dato=$datos->mostrarArchivados("tarea");
-            $dato2=$datos2->mostrarArchivados_nota("anotaciones");
+            $datos2=new Modelo(); //anotaciones
+
+            $data=$datos->traerIdSesiones("sesiones");
+            $datix=$datos->traerIdUser("sesiones",$data);
+            $dato=$datos->mostrar("tarea",1,$datix);
+
+            $data=$datos2->traerIdSesiones("sesiones");//anotaciones
+            $datix=$datos2->traerIdUser("sesiones",$data);//anotaciones
+            $dato2=$datos2->mostrar_nota("anotaciones",1,$datix);//anotaciones
             require_once("vista/archivados.php");
+          } 
+
+          static function papeleraArch(){
+            $id=$_REQUEST['id'];
+            $datos=new Modelo();
+            $datos2=new Modelo(); //anotaciones
+            $dato=$datos->archivar("tarea","id=".$id,2);
+            $dato2=$datos2->archivar("anotaciones","id=".$id,2);
+            header('location:'.'index.php?n=paginaArch');
           }
+
+          // PAPELERA
+          static function papelera(){
+            $id=$_REQUEST['id'];
+            $datos=new Modelo();
+            $dato=$datos->archivar("tarea","id=".$id,2);
+            header('location:'.'index.php?n=index');
+          } 
+          static function sacarPapelera(){
+            $id=$_REQUEST['id'];
+            $datos=new Modelo();
+            $datos2=new Modelo(); //anotaciones
+
+             $data=$datos->traerIdSesiones("sesiones");
+            $datix=$datos->traerIdUser("sesiones",$data);
+            $dato=$datos->archivar("tarea","id=".$id,0);
+             $dato=$datos->mostrar("tarea","2",$datix);
+
+             $data=$datos2->traerIdSesiones("sesiones"); //anotaciones
+             $datix=$datos2->traerIdUser("sesiones",$data); //anotaciones
+             $dato2=$datos2->archivar("anotaciones","id=".$id,0); //anotaciones
+              $dato2=$datos2->mostrar_nota("anotaciones","2",$datix); //anotaciones
+            require_once("vista/papelera.php");
+          }
+          static function paginaPapelera(){
+            $datos=new Modelo();
+            $datos2=new Modelo(); // anotaciones
+
+            $data=$datos->traerIdSesiones("sesiones");
+            $datix=$datos->traerIdUser("sesiones",$data);
+            $dato=$datos->mostrar("tarea",2,$datix);
+
+            $data=$datos2->traerIdSesiones("sesiones"); //anotaciones
+            $datix=$datos2->traerIdUser("sesiones",$data); //anotaciones 
+            $dato2=$datos2->mostrar_nota("anotaciones",2,$datix); //anotaciones
+
+            require_once("vista/papelera.php");
+          }
+
         // Eliminar
           static function eliminar(){
             $id=$_REQUEST['id'];
@@ -105,90 +264,98 @@
             $dato=$datos->eliminar("tarea","id=".$id);
             header('location:'.'index.php?n=index');
          }
+           // Eliminar para archivados
+           static function eliminarArchivado(){
+            $id=$_REQUEST['id'];
+            $datos=new Modelo();
+            $dato=$datos->eliminar("tarea","id=".$id);
+            header('location:'.'index.php?n=paginaArch');
+         }
 
-         // Eliminar nota
-         static function eliminar_nota(){
+
+
+
+                                         //ANOTACIONES
+
+   // Guardar   nota
+   static function guardar_nota(){
+    $descripcion=$_REQUEST['descripcion_anotaciones'];
+      $condicion=0;
+      $usuario=new Modelo();
+      $datu=$usuario->traerIdSesiones("sesiones");
+      $datix=$usuario->traerIdUser("sesiones",$datu);
+      $data="'".$descripcion."',".$condicion.",".$datix;
+        $dato2=$usuario->insertar("anotaciones",$data);
+        header('location:'.'index.php?n=index');
+   }
+
+    // Eliminar nota
+    static function eliminar_nota(){
+      $id=$_REQUEST['id'];
+      $datos2=new Modelo();
+      $dato2=$datos2->eliminar("anotaciones","id=".$id);
+      header('location:'.'index.php?n=index');
+   }
+//llevar nota a papelera
+   static function papelera_nota(){
+    $id=$_REQUEST['id'];
+    $datos2=new Modelo();
+    $dato2=$datos2->archivar("anotaciones","id=".$id,2);
+    header('location:'.'index.php?n=index');
+  } 
+//archivar nota
+  static function archivar_nota(){
+    $id=$_REQUEST['id'];
+    $datos2=new Modelo();
+    $dato2=$datos2->archivar("anotaciones","id=".$id,1);
+    header('location:'.'index.php?n=index');
+  } 
+    // Eliminar nota en archivados
+    static function eliminarArchivado_nota(){
+      $id=$_REQUEST['id'];
+      $datos2=new Modelo();
+      $dato2=$datos2->eliminar("anotaciones","id=".$id);
+      header('location:'.'index.php?n=paginaArch');
+   }
+
+     // editar nota
+     static function editar_nota(){
+      $id=$_REQUEST['id'];
+      $datos2=new Modelo();
+      $dato2=$datos2->mostrar_nota2("anotaciones","id=".$id);
+      require_once("vista/editar_nota.php");
+     }
+
+        // editar nota DESDE ARCHIVADOS
+        static function editar_nota2(){
           $id=$_REQUEST['id'];
           $datos2=new Modelo();
-          $dato=$datos2->eliminar("anotaciones","id=".$id);
-          header('location:'.'index.php?n=index');
-       }
-       
-
-          // Guardar nota
-        static function guardar_nota(){
-          $descripcion=$_REQUEST['descripcion_nota'];
-          $condicion=0;
-          $id_usuario=1;
-          $data="'".$descripcion."',".$condicion.",".$id_usuario;
-          $usuario=new Modelo();
-            $dato=$usuario->insertar("anotaciones",$data);
-             header('location:'.'index.php?n=index');
-       }
-      //archivar nota
-       static function archivar_nota(){
-        $id=$_REQUEST['id'];
-        $datos2=new Modelo();
-        $dato2=$datos2->archivar("anotaciones","id=".$id,1);
-        $dato2=$datos2->mostrar_nota("anotaciones","0");
-        require_once("vista/tareas.php");
-      }
-      //sacar nota de los archivados
-      static function sacarArch_nota(){
-        $id=$_REQUEST['id'];
-        $datos2=new Modelo();
-        $dato2=$datos2->archivar("anotaciones","id=".$id,0);
-        $dato2=$datos2->mostrar_nota("anotaciones","1");
-        require_once("vista/archivados.php");
-      }
-
-         // editar nota
-         static function editar_nota(){
-          $id=$_REQUEST['id'];
-          $datos2=new Modelo();
-          $dato=$datos2->mostrar2_nota("anotaciones","id=".$id);
-          require_once("vista/editar_nota.php");
-       }
-     
-
-         // actualizar nota
-         /*
-         static function actualizar_nota(){
-          $id=$_REQUEST['id'];
-          $descripcion=$_REQUEST['descripcion_nota'];
-          $data="'".$descripcion."'";
-           $datos2=new Modelo();
-           $dato=$datos2->actualizar("anotaciones",$data,"id=".$id);
-           header('location:'.'index.php?n=index');
-        }
-        */
-
-
-
-
-/*
-         static function actualizar_personales(){
-          $id = $_REQUEST['id']; //obtener id
-          $nombre= $_REQUEST['nombre']; //obtener nombre
-          $apellido= $_REQUEST['apellido']; 
-          $correo= $_REQUEST['correo']; 
-          $n_usuario= $_REQUEST['n_usuario'];
-          $clave=$_REQUEST['clave'];
-
-          $data = "nombre='".$nombre."',apellido='".$apellido."',correo='".$correo."',n_usuario='".$n_usuario."',clave='".$clave."'";
-          $usuario = new Modelo(); //instanciar usuario
-          $dato = $usuario->actualizar_personales("usuario",$data,"id=".$id); //consulta
-          header('location:'.'index.php?n=index'); //redireccionar 
-      }
-
-      static function editar_personal(){    
-        $id = $_REQUEST['id']; //obtener id
-        $usuario = new Modelo(); //instanciar 
-        $dato = $usuario->mostrar("usuario","id=".$id);   //consulta      
-        require_once("vista/DatosPersonales.php"); //vista
+          $dato2=$datos2->mostrar_nota2("anotaciones","id=".$id);
+          require_once("vista/editar_nota2.php");
+         }
+//actualizar nota en papelera y tareas
+     static function actualizar_nota(){
+      $id=$_REQUEST['id'];
+      $descripcion=$_REQUEST['descripcion_anotaciones'];
+      $data="descripcion_anotaciones='".$descripcion."'";
+       $datos2=new Modelo();
+       $dato2=$datos2->actualizar("anotaciones",$data,"id=".$id);
+       header('location:'.'index.php?n=index');
     }
 
-*/
+    //actualizar nota en archivados
+    static function actualizar_nota2(){
+      $id=$_REQUEST['id'];
+      $descripcion=$_REQUEST['descripcion_anotaciones'];
+      $data="descripcion_anotaciones='".$descripcion."'";
+       $datos2=new Modelo();
+       $dato2=$datos2->actualizar("anotaciones",$data,"id=".$id);
+       header('location:'.'index.php?n=index');
+    }
+
+  
+
+
 
     }
 ?>

@@ -31,7 +31,7 @@ require_once('layouts/header.php');
 </div>
 <input type="hidden" value="<?php echo $v2['id'] ?>" name="id"> <br>
     <input type="submit" class="submit-notas btn3" value="Editar">
-    <input type="hidden" name="n" value="actualizar_nota"> 
+    <input type="hidden" name="n" value="actualizar_nota2"> 
         </div>
     <?php
         endforeach;
