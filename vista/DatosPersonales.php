@@ -1,103 +1,57 @@
-<?php
+ 
+<?php   
 require_once('layouts/header.php');
 ?>
-  
-  
-  <div class="datos-personales">
-
-       
-       
-<h2 class="titulo-datos">Gestión de información personal</h2>
-<p class="info-datos">Esta es tu cuenta en FiftyFive. Edite su información personal y los ajustes de visibilidad en su Perfil de FiftyFive. Para observar más información, consulte nuestras Condiciones del Servicio o nuestra Política de Privacidad.</p>
-
-<div class="container">
-
- <section class="secciones">
-     <div class="formulario">
-         
-         <div >
-
-             <form action="" method="get" class="form-personal" method="post">
-
-                 <label  for="nombre"> <span class="datos"> <strong>Nombre </strong> </span> </label><br>
-                 <input  type="text" required="required" name="nombre" id="nombre"><br>
-                 <label  for="nombre"> <span class="datos"> <strong>Apellido </strong> </span> </label><br>
-                 <input  type="text" required="required" name="apellido" id="apellido"><br>
-                 
-                 <label for="email"> <span class="datos"> <strong>Correo electrónico</strong> </span> </label><br>
-                 <input  type="email" required="required" name="email" id="email"><br>
-                 <label  for="usuario"> <span class="datos"> <strong>Nombre de Usuario</strong> </span> </label><br>
-                 <input  type="text" required="required" name="uruario" id="usuario"><br>
-                 <label for="password"> <span class="datos-clave"> <strong>Contraseña</strong> </span> </label><br>
-                 <input  type="password" required="required" name="password" id="password"><br>
-                 <input id="submit-personal"  type="submit" value="Guardar">
-
-             </form>
-               
-         </div>
-     </div> 
+ <div class="contenido">
+        <div class="text">
+        <h2>EDITAR DATOS PERSONALES</h2>
+        <br> 
+<form action="" method="get">
+   
+        <div class="edit_tarea2">
     
+        <div class="bloc">
+   
+        <label >Correo </label><br>
+              <input type="email" required="required" name="correo">
+             
+              
+              <br>
+              <label >Nombre</label><br>
+              <input type="text" required="required"  name="nombre">
+              <br>
+              <label >Apellido</label><br>
+              <input type="text" required="required"  name="apellido">
+              <br>
+              <label >Nombre de Usuario</label><br>
+              <input type="text" required="required"  name="n_usuario">
+              <br>
+              <label >Contraseña</label><br>
+              <input type="password" required="required"  name="contrasenia">
+              <br>
+             
+              
 
- 
- </section>
-
+    <br>
+    </div>
+    <div class="bloc">
+</div>
+<div class="bloc">
 </div>
 
-</div>
 
+    <input type="submit" class="submit-notas btn3" value="Guardar">
+    <input type="hidden" name="n" value="actualizaru2"> 
+        </div>
+    
+</form>
 
-
- 
-
-<script src="vista/script.js"></script>
-  <!-- <?php
+        
+        </div>
+ </div>
+ <script src="vista/script.js"></script>
+ <?php
 require_once('layouts/footer.php');
 ?>
-
-/*
- <div class="datos-personales">
-
-       
-       
-<h2 class="titulo-datos">Gestión de información personal</h2>
-<p class="info-datos">Esta es tu cuenta en FiftyFive. Edite su información personal y los ajustes de visibilidad en su Perfil de FiftyFive. Para observar más información, consulte nuestras Condiciones del Servicio o nuestra Política de Privacidad.</p>
-
-<div class="container">
-
- <section class="secciones">
-     <div class="formulario">
-         
-         <div >
-
-             <form class="form-personal" method="post">
-
-                 <label  for="nombre"> <span class="datos"> <strong>Nombre completo</strong> </span> </label><br>
-                 <input  type="text" required="required" name="nombre" id="nombre"><br>
-                 <label  for="usuario"> <span class="datos"> <strong>Nombre de Usuario</strong> </span> </label><br>
-                 <input  type="text" required="required" name="uruario" id="usuario"><br>
-                 <label for="email"> <span class="datos"> <strong>Correo electrónico</strong> </span> </label><br>
-                 <input  type="email" required="required" name="email" id="email"><br>
-                 <label for="password"> <span class="datos-clave"> <strong>Contraseña</strong> </span> </label><br>
-                 <input  type="password" required="required" name="password" id="password"><br>
-                 <input id="submit-personal"  type="submit" value="Guardar">
-
-             </form>
-               
-         </div>
-     </div> 
-    
-
- 
- </section>
-
-</div>
-
-</div>
-
-
-*/
-
-
-
 
 

@@ -5,6 +5,7 @@ class Modelo{
     private $db;
     private $datos;
     private $datos2; //para anotaciones
+    //private $datos3; //para datos personales
     public function __construct(){
         $this->Modelo=array();
         $this->db=new PDO('mysql:host=localhost;dbname=fifty_five',"root","");
@@ -138,9 +139,18 @@ class Modelo{
         }
         return $this->datos2;
     }
-       
 
 
+                           //DATOS PERSONALES
+/*
+    public function mostrar_personales($tabla,$condicion){
+        $consul="select * from ".$tabla." where ".$condicion;
+        $resul=$this->db->query($consul);
+        while($filas=$resul->FETCHALL(PDO::FETCH_ASSOC)){
+            $this->usuario[]=$filas;
+        }
+        return $this->usuario;
+    }*/
 
 
 }

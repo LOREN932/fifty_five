@@ -8,7 +8,9 @@ require_once('layouts/header.php');
     <div class="contenedor-tareas">
         <div>
            <button class="boton-crear-tarea" id="abrir">Crear Tarea</button> <br>
-           <button class="boton-crear-nota"  id="abrir2" >Crear anotacion</button>
+          
+            <button class="boton-crear-nota"  id="abrir2" >Crear anotacion</button>
+          
 
         </div>
         

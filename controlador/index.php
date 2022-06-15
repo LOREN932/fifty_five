@@ -353,9 +353,127 @@
        header('location:'.'index.php?n=index');
     }
 
+
+
+
+
+                                  //DATOS PERSONALES
+   /*                           
+  static function traerDatosPersonales(){
+    $id=$_REQUEST['id'];
+    $usuario=new Modelo();
+    $dato=$usuario->mostrar2("usuario","id=".$datix);
+    //require_once("vista/DatosPersonales.php");
+    header('location:'.'index.php?n=personales');
+   }
+  
+   static function actualizarDatos(){
+      $id=$_REQUEST['id'];
+      $nombre=$_REQUEST['nombre'];
+      $apellido=$_REQUEST['apellido'];
+       $correo=$_REQUEST['correo'];
+       $n_usuario=$_REQUEST['n_usuario'];
+       $contrasenia=$_REQUEST['contrasenia'];
+      $data="nombre=' ".$nombre." ',apellido=' ".$apellido." ',correo=' ".$correo." ',n_usuario=' ".$n_usuario." ',contrasenia= ' ".$contrasenia." ' ";;
+       $usuario=new Modelo();
+       $dato=$datos->actualizar("usuario",$data,"id=".$id);
+       header('location:'.'index.php?n=personales');
+    }*/
+
+    /*static function actualizaru2(){
+           
+      $correo=$_REQUEST['correo'];
+      $contrasenia=$_REQUEST['contrasenia'];
+      $data   = "clave='".$contrasenia."'";
+       $datos=new Modelo();
+      
+          $mostrar=$datos->traerid("usuario","correo= '".$correo."'");
+          $dato=$datos->actualizar("usuario",$data,"id=".$mostrar);
+          header('location:'.'index.php?n=personales');
+         
+    
+    
+      }*/
+
+
+      /*
+      //  Guardar datos de usuario
+      static function guardaru(){
+        $nombre=$_REQUEST['nombre'];
+        $apellido=$_REQUEST['apellido'];
+         $correo=$_REQUEST['correo'];
+        $n_usuario=$_REQUEST['n_usuario'];
+        $contrasenia=$_REQUEST['contrasenia'];
+        $data="'".$nombre."','".$apellido."','".$correo."','".$n_usuario."','".$contrasenia."'";
+       
+        $usuario=new Modelo();
+        $condicion="nombre='".$nombre."' AND apellido='".$apellido."' AND correo='".$correo."' AND n_usuario='".$n_usuario."' AND clave='".$contrasenia."'";
+
+          if($usuario->validar_User_existente("usuario","n_usuario='".$n_usuario."'","correo='".$correo."'")){
+            header('location:'.ModeloController::nuevo());
+             echo "<script>alert('el nombre de usuario: $n_usuario o el correo: $correo ya estan siendo utilizados');</script>";
+          }else{
+            $dato=$usuario->insertar("usuario",$data);
+            $datux=$usuario->traerId("usuario",$condicion);
+            $dato=$usuario->insertar("sesiones",$datux);
+             header('location:'.'index.php?n=iniciar');
+          }
+     } */
+
+     /*
+      static function editar_personales(){
+        $id=$_REQUEST['id'];
+        $usuario=new Modelo();
+        
+        $dato=$usuario->mostrar2("usuario","id=".$id);
+        require_once("vista/DatosPersonales.php");
+       }*/
+
+       //  actualizar usuario
+     /* static function actualizaru2(){
+        $nombre=$_REQUEST['nombre'];
+        $apellido=$_REQUEST['apellido'];
+        $n_usuario=$_REQUEST['n_usuario'];
+        $correo=$_REQUEST['correo'];
+        $contrasenia=$_REQUEST['contrasenia'];
+        //$data   = "clave='".$contrasenia."'";
+         $data="nombre=' ".$nombre." ',apellido=' ".$apellido." ',n_usuario=' ".$n_usuario." ',contrasenia= ' ".$contrasenia." ' ";
+         $datos=new Modelo();
+         if($datos->validar_User_existente2("usuario","correo= '".$correo."'" )){
+            $mostrar=$datos->traerid("usuario","correo= '".$correo."'");
+            $dato=$datos->actualizar("usuario",$data,"id=".$mostrar);
+            header('location:'.'index.php?n=personales');
+            echo "<script>alert('Los datos personales fueron cambiados exitosamente');</script>";
+         }
+         else{
+         
+          header('location:'.'index.php?n=personales');
+          echo "<script>alert('El correo: $correo  no existe');</script>";
+          
+         }*/
+      
+        
+
+         //  actualizar datos personales del usuario 
+         
+      static function actualizaru2(){
+        
+        $nombre=$_REQUEST['nombre'];
+        $apellido=$_REQUEST['apellido'];
+        $n_usuario=$_REQUEST['n_usuario'];
+        $correo=$_REQUEST['correo'];
+        $contrasenia=$_REQUEST['contrasenia'];
+        $data="nombre=' ".$nombre." ',apellido=' ".$apellido." ',n_usuario=' ".$n_usuario." ',correo='".$correo. "',clave=' ".$contrasenia."'";
+         $datos=new Modelo();
+         $datu=$datos->traerIdSesiones("sesiones");
+    $datix=$datos->traerIdUser("sesiones",$datu);
+          $dato=$datos->actualizar("usuario",$data,"id=".$datix);
+          header('location:'.'index.php?n=personales');
+        }
+
   
 
 
-
-    }
+      }
+    
 ?>
